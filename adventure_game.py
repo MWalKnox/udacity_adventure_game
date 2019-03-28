@@ -1,18 +1,22 @@
 import time
+import random
 
 
 def print_pause(message_to_print):
     print(message_to_print)
-    time.sleep(1)
+    time.sleep(0)
 
 
 def intro():
     print_pause("Hello and welcome to our newest adventure game!")
     print_pause("You're standing in the center of a large room.")
-    print_pause("The door behind you is clearly marked as an exit, "
-                "but it is locked.")
-    print_pause("The goal of this game is to collect all three keys "
-                "to create the master key and escape through the exit.")
+    print_pause("The locked door behind you is clearly marked as an exit.")
+    print_pause("The goal of this game is to collect three keys with which "
+                "you will create the master key and escape.")
+
+
+def random_action():
+    return random.choice(["You use the key.", "You hear a noise behind you."])
 
 
 def first_room(items):
@@ -40,7 +44,7 @@ def second_room(items):
         items.append("bronze key")
         print_pause("You walk back to the second room to unlock the "
                     "bronze chest.")
-    get_key(items)
+        get_key(items)
 
 
 def third_room(items):
@@ -55,7 +59,7 @@ def third_room(items):
         items.append("gold key")
         print_pause("You walk through the hallway and back into the "
                     "third room to unlock the gold treasure chest.")
-    get_key(items)
+        get_key(items)
 
 
 def leave_building(items):
@@ -68,23 +72,31 @@ def leave_building(items):
     if "gold key" in items:
         print_pause("You have the gold key!")
 
+    if "silver key" and "bronze key" and "gold key" in items:
         print_pause("You create the master key, unlock the master lock "
                     "and successfully escape!")
+        print_pause("Congratulations! You've collected all three keys "
+                    "and escaped!")
         play_again()
 
-    else:
-        print_pause("I'm sorry you have not collected all three keys!")
+    elif "silver key" not in items:
+        print_pause("You do not have the silver key!")
+    elif "bronze key" not in items:
+        print_pause("You do not have the bronze key!")
+    elif "gold key" not in items:
+        print_pause("You do not have the gold key!")
+
+    elif "silver key" or "bronze key" or "gold key" not in items:
+        print_pause("You do not have all three keys!")
         get_key(items)
 
 
 def get_key(items):
-    print_pause("Which way do we need to go? You may go to the right, "
+    print_pause("Which way do we need to go? You may choose right, "
                 "left, or straight ahead.")
-    print_pause("If you've collected all three keys, you may unlock the "
-                "exit door.")
-    room = input("Right?\n"
-                 "Left?\n"
-                 "Straight?\n"
+    room = input("right?\n"
+                 "left?\n"
+                 "straight?\n"
                  "escape\n")
     if room == 'right':
         first_room(items)
@@ -104,9 +116,12 @@ def play_again():
     again = input("Yes\n"
                   "No\n")
     if again == 'yes':
+        print_pause("Great! Give us a few seconds to set it up again!")
         play_game()
-    else:
+    if again == 'no':
         print_pause("Okay, thank you for playing our adventure game!")
+    else:
+        print_pause("I'm sorry, that is not a valid answer at this time.")
 
 
 def play_game():
